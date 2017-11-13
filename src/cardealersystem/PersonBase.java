@@ -18,6 +18,7 @@ public abstract class PersonBase {
     }
 
     public String getInfo() {
-        return "Name: " + this.firstName + " " + this.lastName + "\nAddress: " + this.address;
+        String baseInfo = "Name: " + this.firstName + " " + this.lastName + "\nAddress: " + this.address;
+        return baseInfo;
     }
 }

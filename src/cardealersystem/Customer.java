@@ -15,4 +15,11 @@ public class Customer extends PersonBase {
         this.phoneNumber = phoneNumber;
         this.email = email;
     }
+
+    public String getInfo() {
+        String id = "Customer ID: " + this.customerID;
+        String info = id + "\n" + super.getInfo();
+        info += "\nPhone Number: " + this.phoneNumber + "\nEmail: " + this.email;
+        return info;
+    }
 }
