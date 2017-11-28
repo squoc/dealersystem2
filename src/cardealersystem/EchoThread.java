@@ -43,16 +43,27 @@ public class EchoThread extends Thread
 
             // Loop to read messages
             Message msg = null;
-            int count = 0;
+            boolean isAuthenticated = false;
 
             do {
-                // read and print message
+                while (!isAuthenticated) {
+                    msg = (Message) input.readObject();
+                    System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.content);
+
+                    if (msg.content.equals("admin;secret")) {
+                        isAuthenticated = true;
+                        output.writeObject(new Message("authenticated"));
+                        break;
+                    } else {
+                        output.writeObject(new Message( "not authenticated"));
+                    }
+                }
+
                 msg = (Message) input.readObject();
                 System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.content);
 
                 // Write an ACK back to the sender
-                count++;
-                output.writeObject(new Message("Recieved message #" + count));
+                output.writeObject(new Message(msg.content));
 
             } while (!msg.content.toUpperCase().equals("EXIT"));
 

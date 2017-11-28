@@ -6,6 +6,9 @@ import java.net.Socket;
 public class SocketClient {
 
     public static void main(String[] args) {
+
+        boolean isAuthenticated = false;
+
         try {
             String hostname = "localhost";
 
@@ -18,11 +21,50 @@ public class SocketClient {
             Message msg = null, resp = null;
 
             do {
-                msg = new Message(readSomeText());
+
+                while (!isAuthenticated) {
+                    String username = askUsername();
+                    String pw = askPassword();
+                    String loginInfo = username + ";" + pw;
+                    msg = new Message((loginInfo));
+                    output.writeObject(msg);
+
+                    resp = (Message) input.readObject();
+                    if (resp.content.equals("authenticated")) {
+                        isAuthenticated = true;
+                        System.out.println("User authenticated.");
+                        break;
+                    } else if (resp.content.equals("not authenticated")) {
+                        System.out.println("Unauthorized access. Please try again.");
+                        continue;
+                    }
+                }
+
+                displayMenu();
+                String option = readSomeText();
+                int opt = Integer.parseInt(option);
+                switch (opt) {
+                    case 1:
+                        msg = new Message("car inventory check");
+                        break;
+                    case 2:
+                        msg = new Message("part inventory check");
+                        break;
+                    case 3:
+                        msg = new Message("show monthly sale");
+                        break;
+                    case 4:
+                        System.exit(0);
+                    default:
+                        System.out.println("Invalid option. Please try again.");
+                        continue;
+                }
                 output.writeObject(msg);
 
+                // simply echo the message for now
+                // have to prepare data from the server
                 resp = (Message) input.readObject();
-                System.out.println("\nServer says: " + resp.content + "\n");
+                System.out.println(resp.content);
 
             } while (!msg.content.toUpperCase().equals("EXIT"));
 
@@ -35,6 +77,13 @@ public class SocketClient {
         }
     }
 
+    public static void displayMenu() {
+        System.out.println("1. Check car inventory");
+        System.out.println("2. Check part inventory");
+        System.out.println("3. Show monthly total sale");
+        System.out.println("4. Exit");
+    }
+
     private static String readSomeText() {
         try {
             System.out.println("Enter a line of text, or type \"EXIT\" to quit.");
@@ -44,6 +93,25 @@ public class SocketClient {
         } catch (Exception e) {
             return "";
         }
+    }
 
+    private static String askUsername() {
+        try {
+            System.out.println("Please enter username: ");
+            BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+            return in.readLine();
+        } catch (Exception e) {
+            return "";
+        }
+    }
+
+    private static String askPassword() {
+        try {
+            System.out.println("Please enter password: ");
+            BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+            return in.readLine();
+        } catch (Exception e) {
+            return "";
+        }
     }
 }
