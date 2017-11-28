@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="0cd0c49e-94ba-4f8d-8450-8ddf5f5914e1" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/cardealersystem/EchoThread.java" afterPath="$PROJECT_DIR$/src/cardealersystem/EchoThread.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/cardealersystem/SocketClient.java" afterPath="$PROJECT_DIR$/src/cardealersystem/SocketClient.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.idea/" />
@@ -16,10 +15,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="SocketClient.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="SocketClient.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/cardealersystem/SocketClient.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="286">
+            <state relative-caret-position="1078">
               <caret line="56" column="47" lean-forward="false" selection-start-line="56" selection-start-column="47" selection-end-line="56" selection-end-column="47" />
               <folding />
             </state>
@@ -38,11 +37,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="EchoThread.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="EchoThread.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/cardealersystem/EchoThread.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="550">
-              <caret line="64" column="87" lean-forward="false" selection-start-line="64" selection-start-column="87" selection-end-line="64" selection-end-column="87" />
+            <state relative-caret-position="924">
+              <caret line="72" column="41" lean-forward="false" selection-start-line="72" selection-start-column="41" selection-end-line="72" selection-end-column="41" />
               <folding />
             </state>
           </provider>
@@ -670,14 +669,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/cardealersystem/SocketClient.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="56" column="47" lean-forward="false" selection-start-line="56" selection-start-column="47" selection-end-line="56" selection-end-column="47" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/cardealersystem/SocketServer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="330">
@@ -690,8 +681,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/cardealersystem/EchoThread.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="550">
-          <caret line="64" column="87" lean-forward="false" selection-start-line="64" selection-start-column="87" selection-end-line="64" selection-end-column="87" />
+        <state relative-caret-position="924">
+          <caret line="72" column="41" lean-forward="false" selection-start-line="72" selection-start-column="41" selection-end-line="72" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/cardealersystem/SocketClient.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1078">
+          <caret line="56" column="47" lean-forward="false" selection-start-line="56" selection-start-column="47" selection-end-line="56" selection-end-column="47" />
           <folding />
         </state>
       </provider>

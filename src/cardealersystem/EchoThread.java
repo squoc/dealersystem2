@@ -62,12 +62,21 @@ public class EchoThread extends Thread
                 msg = (Message) input.readObject();
                 System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.content);
 
-                // develop a method that handle msg content here, get data from database
-                // data = handleRequest();
+                String request = msg.content;
+                String response = "response from server";
+
+                if (request.equals("car inventory check")) {
+                    // get car inventory
+                    response = "query some car inventory.";
+                }
+                else if (request.equals(("part inventory check"))) {
+                    // get part inventory
+                    response = "query some part";
+                }
 
                 // simply echo back to client for now, but need to write real data back to client
                 // output.writeObject(new Message(data));
-                output.writeObject(new Message(msg.content));
+                output.writeObject(new Message(response));
 
             } while (!msg.content.toUpperCase().equals("EXIT"));
 
