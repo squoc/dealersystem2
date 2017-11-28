@@ -54,6 +54,7 @@ public class SocketClient {
                         msg = new Message("show monthly sale");
                         break;
                     case 4:
+                        System.out.println("Bye.");
                         System.exit(0);
                     default:
                         System.out.println("Invalid option. Please try again.");

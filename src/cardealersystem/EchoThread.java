@@ -62,7 +62,11 @@ public class EchoThread extends Thread
                 msg = (Message) input.readObject();
                 System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.content);
 
-                // Write an ACK back to the sender
+                // develop a method that handle msg content here, get data from database
+                // data = handleRequest();
+
+                // simply echo back to client for now, but need to write real data back to client
+                // output.writeObject(new Message(data));
                 output.writeObject(new Message(msg.content));
 
             } while (!msg.content.toUpperCase().equals("EXIT"));
