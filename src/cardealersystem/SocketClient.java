@@ -7,8 +7,6 @@ public class SocketClient {
 
     public static void main(String[] args) {
 
-        boolean isAuthenticated = false;
-
         try {
             String hostname = "localhost";
 
@@ -20,16 +18,28 @@ public class SocketClient {
 
             Message msg = null, resp = null;
 
+            boolean isAuthenticated = false;
+
             do {
 
                 while (!isAuthenticated) {
-                    String username = askUsername();
-                    String pw = askPassword();
+                    System.out.println("Please enter username. Type EXIT to exit.");
+                    String username = ClientInputCollector.getInput();
+
+                    if (username.equalsIgnoreCase("exit"))
+                        System.exit(0);
+
+                    System.out.println("Please enter password: ");
+                    String pw = ClientInputCollector.getInput();
+
+
                     String loginInfo = username + ";" + pw;
+
                     msg = new Message((loginInfo));
                     output.writeObject(msg);
 
                     resp = (Message) input.readObject();
+
                     if (resp.content.equals("authenticated")) {
                         isAuthenticated = true;
                         System.out.println("User authenticated.");
@@ -40,24 +50,81 @@ public class SocketClient {
                     }
                 }
 
-                displayMenu();
+                ClientDisplay.displayMainMenu();
 
-                String option = readSomeText();
+                String option = ClientInputCollector.getInput();
 
-                int opt = Integer.parseInt(option);
-                switch (opt) {
-                    case 1:
-                        msg = new Message("car inventory check");
+                switch (option) {
+                    case "1":
+                        ClientDisplay.displayCarSubMenu();
+                        String carOption = ClientInputCollector.getInput();
+
+                        switch (carOption) {
+                            case "1":
+                                msg = new Message("Get all cars");
+                                break;
+                            case "2":
+                                System.out.println("Please input the make: ");
+                                String make = ClientInputCollector.getInput();
+                                msg = new Message("Find cars by make:" + make);
+                                break;
+                            case "3":
+                                System.out.println("Please input the VIN: ");
+                                String vin = ClientInputCollector.getInput();
+                                msg = new Message("Find car by vin:" + vin);
+                                break;
+                            case "4":
+                                System.out.println("Please input new car data by order of VIN, make, price, horsepower, mileage separated by comma: ");
+                                String carData = ClientInputCollector.getInput();
+                                msg = new Message(carData);
+                                break;
+                            default:
+                                continue;
+                        }
                         break;
-                    case 2:
-                        msg = new Message("part inventory check");
+
+                    case "2":
+                        ClientDisplay.displayPartSubMenu();
+                        String partOption = ClientInputCollector.getInput();
+
+                        switch (partOption) {
+                            case "1":
+                                msg = new Message("Get all parts");
+                                break;
+                            case "2":
+                                System.out.println("Please input part ID: ");
+                                String partID = ClientInputCollector.getInput();
+                                msg = new Message("Find part by id:" + partID);
+                                break;
+                            case "3":
+                                System.out.println("Please int put new part data by order of partID, description, price, origin separated by comma: ");
+                                String partData = ClientInputCollector.getInput();
+                                msg = new Message(partData);
+                                break;
+                            default:
+                                continue;
+                        }
                         break;
-                    case 3:
-                        msg = new Message("show monthly sale");
+
+                    case "3":
+                        ClientDisplay.displaySaleSubMenu();
+                        String saleOption = ClientInputCollector.getInput();
+
+                        switch (saleOption) {
+                            case "1":
+                                msg = new Message("Get all monthly sales");
+                                break;
+                            default:
+                                continue;
+                        }
                         break;
-                    case 4:
+
+                    case "4":
                         System.out.println("Bye.");
-                        System.exit(0);
+                        System.out.println("Client exits.");
+                        msg = new Message("EXIT");
+                        break;
+
                     default:
                         System.out.println("Invalid option. Please try again.");
                         continue;
@@ -65,8 +132,6 @@ public class SocketClient {
 
                 output.writeObject(msg);
 
-                // simply echo the message for now
-                // have to prepare data from the server
                 resp = (Message) input.readObject();
                 System.out.println(resp.content);
 
@@ -75,47 +140,10 @@ public class SocketClient {
         } catch (IOException e) {
             System.err.println("Error: " + e.getMessage());
             e.printStackTrace(System.err);
+
         } catch (ClassNotFoundException e) {
             System.err.println("Error: " + e.getMessage());
             e.printStackTrace(System.err);
-        }
-    }
-
-    public static void displayMenu() {
-        System.out.println("1. Check car inventory");
-        System.out.println("2. Check part inventory");
-        System.out.println("3. Show monthly total sale");
-        System.out.println("4. Exit");
-    }
-
-    private static String readSomeText() {
-        try {
-            System.out.println("Enter request, or type \"EXIT\" to quit.");
-            System.out.print(" > ");
-            BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-            return in.readLine();
-        } catch (Exception e) {
-            return "";
-        }
-    }
-
-    private static String askUsername() {
-        try {
-            System.out.println("Please enter username: ");
-            BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-            return in.readLine();
-        } catch (Exception e) {
-            return "";
-        }
-    }
-
-    private static String askPassword() {
-        try {
-            System.out.println("Please enter password: ");
-            BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-            return in.readLine();
-        } catch (Exception e) {
-            return "";
         }
     }
 }

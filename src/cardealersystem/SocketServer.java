@@ -15,10 +15,10 @@ public class SocketServer {
 
             // A simple infinite loop to accept connections
             Socket sock = null;
-            EchoThread thread = null;
+            DataProcessThread thread = null;
             while (true) {
                 sock = serverSock.accept();     // Accept an incoming connection
-                thread = new EchoThread(sock);  // Create a thread to handle this connection
+                thread = new DataProcessThread(sock);  // Create a thread to handle this connection
                 thread.start();                 // Fork the thread
             }                                   // Loop to work on new connections while this
                                                 // the accepted connection is handled

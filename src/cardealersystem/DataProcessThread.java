@@ -10,7 +10,7 @@ import java.io.ObjectOutputStream;  // For writing Java objects to the wire
  * over the socket until the socket is closed.
  *
  */
-public class EchoThread extends Thread
+public class DataProcessThread extends Thread
 {
     private final Socket socket;                   // The socket that we'll be talking over
 
@@ -20,7 +20,7 @@ public class EchoThread extends Thread
      * @param _socket The socket passed in from the server
      *
      */
-    public EchoThread(Socket _socket)
+    public DataProcessThread(Socket _socket)
     {
         socket = _socket;
     }
@@ -48,7 +48,7 @@ public class EchoThread extends Thread
             // load users into memory
             Users.seedUsers();
 
-            do {
+            while (true) {
                 while (!isAuthenticated) {
                     msg = (Message) input.readObject();
                     System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.content);
@@ -74,23 +74,20 @@ public class EchoThread extends Thread
                 msg = (Message) input.readObject();
                 System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.content);
 
+                if (msg.content.equalsIgnoreCase("exit")) {
+                    output.writeObject(new Message("Server exits."));
+                    break;
+                }
+
+
                 String request = msg.content;
-                String response = "response from server";
 
-                if (request.equals("car inventory check")) {
-                    // get car inventory
-                    response = "query some car inventory.";
-                }
-                else if (request.equals(("part inventory check"))) {
-                    // get part inventory
-                    response = "query some part";
-                }
+                RequestHandler handler = new RequestHandler(request);
 
-                // simply echo back to client for now, but need to write real data back to client
-                // output.writeObject(new Message(data));
+                String response = handler.produceResponse();
+
                 output.writeObject(new Message(response));
-
-            } while (!msg.content.toUpperCase().equals("EXIT"));
+            }
 
             // Close and cleanup
             System.out.println("** Closing connection with " + socket.getInetAddress() + ":" + socket.getPort() + " **");
@@ -104,5 +101,5 @@ public class EchoThread extends Thread
 
     }  //-- end run()
 
-} //-- end class EchoThread
+} //-- end class DataProcessThread
 

@@ -1,10 +1,10 @@
 package cardealersystem;
 
-public class Saleman extends Employee {
+public class Salesman extends Employee {
     private int numberOfSales;
     public Employee supervisor;
 
-    public Saleman(String first, String last, String add, int id, String department, String email, int ssn, double salary) {
+    public Salesman(String first, String last, String add, int id, String department, String email, int ssn, double salary) {
         super(first, last, add, id, department, email, ssn, salary);
     }
 
