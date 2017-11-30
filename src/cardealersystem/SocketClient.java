@@ -41,7 +41,9 @@ public class SocketClient {
                 }
 
                 displayMenu();
+
                 String option = readSomeText();
+
                 int opt = Integer.parseInt(option);
                 switch (opt) {
                     case 1:
@@ -60,6 +62,7 @@ public class SocketClient {
                         System.out.println("Invalid option. Please try again.");
                         continue;
                 }
+
                 output.writeObject(msg);
 
                 // simply echo the message for now
@@ -87,7 +90,7 @@ public class SocketClient {
 
     private static String readSomeText() {
         try {
-            System.out.println("Enter a line of text, or type \"EXIT\" to quit.");
+            System.out.println("Enter request, or type \"EXIT\" to quit.");
             System.out.print(" > ");
             BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
             return in.readLine();

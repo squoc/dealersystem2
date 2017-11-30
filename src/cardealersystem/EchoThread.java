@@ -45,12 +45,24 @@ public class EchoThread extends Thread
             Message msg = null;
             boolean isAuthenticated = false;
 
+            // load users into memory
+            Users.seedUsers();
+
             do {
                 while (!isAuthenticated) {
                     msg = (Message) input.readObject();
                     System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.content);
 
-                    if (msg.content.equals("admin;secret")) {
+                    String userInfo = msg.content;
+                    String[] parts = userInfo.split(";");
+
+                    String username = parts[0];
+                    String pw = parts[1];
+
+                    User u = Users.findUser(username);
+
+
+                    if (u != null && u.authenticate(pw)) {
                         isAuthenticated = true;
                         output.writeObject(new Message("authenticated"));
                         break;
