@@ -15,7 +15,7 @@ public class Part {
 
     public String getPartInfo() {
         String info = "Part ID: " + this.partID + "\nDescription: " + this.description + "\nPrice: " + this.price
-                        + "\nOrigin: " + this.origin;
+                        + "\nOrigin: " + this.origin + "\n---------\n";
 
         return info;
     }

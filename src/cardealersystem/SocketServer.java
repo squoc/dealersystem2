@@ -16,18 +16,24 @@ public class SocketServer {
             // A simple infinite loop to accept connections
             Socket sock = null;
             DataProcessThread thread = null;
-            while (true) {
-                sock = serverSock.accept();     // Accept an incoming connection
-                thread = new DataProcessThread(sock);  // Create a thread to handle this connection
-                thread.start();                 // Fork the thread
-            }                                   // Loop to work on new connections while this
-                                                // the accepted connection is handled
 
+            while (true) {
+                // Accept an incoming connection
+                sock = serverSock.accept();
+
+                // Create a thread to handle this connection
+                thread = new DataProcessThread(sock);
+
+                // Fork the thread
+                // Loop to work on new connections while this
+                // the accepted connection is handled
+                thread.start();
+            }
         }
+
         catch(Exception e){
             System.err.println("Error: " + e.getMessage());
             e.printStackTrace(System.err);
         }
-
-    }  //-- end main(String[])
+    }
 }

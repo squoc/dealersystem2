@@ -5,32 +5,16 @@ import java.net.Socket;
 import java.io.ObjectInputStream;   // For reading Java objects off of the wire
 import java.io.ObjectOutputStream;  // For writing Java objects to the wire
 
-/**
- * A simple server thread.  This class just echoes the messages sent
- * over the socket until the socket is closed.
- *
- */
+
 public class DataProcessThread extends Thread
 {
-    private final Socket socket;                   // The socket that we'll be talking over
+    private final Socket socket;
 
-    /**
-     * Constructor that sets up the socket we'll chat over
-     *
-     * @param _socket The socket passed in from the server
-     *
-     */
     public DataProcessThread(Socket _socket)
     {
         socket = _socket;
     }
 
-
-    /**
-     * run() is basically the main method of a thread.  This thread
-     * simply reads Message objects off of the socket.
-     *
-     */
     public void run()
     {
         try {
@@ -48,21 +32,35 @@ public class DataProcessThread extends Thread
             // load users into memory
             Users.seedUsers();
 
+            //load cars and parts data into memory
+            Inventory.seedCars();
+            Inventory.seedParts();
+
+            // seed purchase lists to memory
+            SeedPurchases.seed();
+
+            // infinity loop until exit signal shows
             while (true) {
+
+                // server authentication part
                 while (!isAuthenticated) {
                     msg = (Message) input.readObject();
                     System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.content);
 
+                    // get query string from client to process
                     String userInfo = msg.content;
                     String[] parts = userInfo.split(";");
 
                     String username = parts[0];
                     String pw = parts[1];
 
+                    // query user info against pre existing user list
                     User u = Users.findUser(username);
 
-
+                    // authenticate user
                     if (u != null && u.authenticate(pw)) {
+
+                        // if user gets authenticated, send signal to client
                         isAuthenticated = true;
                         output.writeObject(new Message("authenticated"));
                         break;
@@ -71,9 +69,11 @@ public class DataProcessThread extends Thread
                     }
                 }
 
+                // receive action code from client
                 msg = (Message) input.readObject();
                 System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.content);
 
+                // break out of infinity loop if client flag exit signal
                 if (msg.content.equalsIgnoreCase("exit")) {
                     output.writeObject(new Message("Server exits."));
                     break;
@@ -82,10 +82,17 @@ public class DataProcessThread extends Thread
 
                 String request = msg.content;
 
+                // print out request code to console for debug purpose
+                System.out.println("Request code is: " + request);
+
+                // spawn new instance of request handler to process request code
                 RequestHandler handler = new RequestHandler(request);
 
+                // after request code is processed, produce response string, also print out console for debug
                 String response = handler.produceResponse();
+                System.out.println("Response is: " + response);
 
+                // push data back to the client
                 output.writeObject(new Message(response));
             }
 
@@ -99,7 +106,6 @@ public class DataProcessThread extends Thread
             e.printStackTrace(System.err);
         }
 
-    }  //-- end run()
-
-} //-- end class DataProcessThread
+    }
+}
 
